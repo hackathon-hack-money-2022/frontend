@@ -21,7 +21,6 @@ export function AssetPie(props: Props) {
           setPieState({
             ...newPieState,
           });
-          console.log(pieState);
         }
       }
     );
@@ -42,8 +41,6 @@ export function AssetPie(props: Props) {
           value: Number(item[1]),
           color: stringToColour(item[0]),
         }));
-
-  console.log(pieces);
 
   return <Pie key={pieState.length} pieces={pieces} />;
 }

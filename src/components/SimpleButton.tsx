@@ -3,7 +3,13 @@ import Button from "@mui/material/Button";
 
 export function SimpleButton(props: Props): JSX.Element {
   return (
-    <Button variant="contained" onClick={props.onClick}>
+    <Button
+      variant={"contained"}
+      color={props.color}
+      disabled={props.disabled}
+      onClick={props.onClick}
+      type={props.type}
+    >
       {props.children}
     </Button>
   );
@@ -12,4 +18,14 @@ export function SimpleButton(props: Props): JSX.Element {
 interface Props {
   onClick: () => void;
   children: string;
+  disabled?: boolean;
+  type?: "submit";
+  color?:
+    | "inherit"
+    | "primary"
+    | "secondary"
+    | "success"
+    | "error"
+    | "info"
+    | "warning";
 }

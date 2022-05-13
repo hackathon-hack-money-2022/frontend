@@ -12,16 +12,17 @@ export function Constructions(): JSX.Element {
 
   return (
     <React.Fragment>
-      <Grid container>
-        <Grid item xs={8}>
+      <Grid container style={{ maxWidth: "800px", margin: "auto" }} padding={5}>
+        <Grid item xs={6}>
           <AssetPie watch={watch} />
         </Grid>
 
-        <Grid item xs={4}>
+        <Grid item xs={6}>
           <AssetList
             control={control}
             handleSubmit={handleSubmit}
             onSubmit={onSubmit}
+            watch={watch}
           />
         </Grid>
       </Grid>
