@@ -1,7 +1,7 @@
 import { GetAsset } from "../../communication/GetAssets";
 import { BaseForm, SimpleSelection } from "../../components/SimpleSelection";
 
-export function AssetSelection(props: BaseForm): JSX.Element {
+export function AssetSelection(props: Props): JSX.Element {
   return (
     <GetAsset>
       {(items) => (
@@ -11,9 +11,14 @@ export function AssetSelection(props: BaseForm): JSX.Element {
           items={items.map((item) => ({
             name: item.symbol,
             value: item.symbol,
+            deactivated: props.nameSelected.includes(item.symbol)
           }))}
         />
       )}
     </GetAsset>
   );
+}
+
+interface Props extends BaseForm{
+  nameSelected: string[];
 }

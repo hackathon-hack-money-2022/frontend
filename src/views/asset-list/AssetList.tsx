@@ -1,59 +1,50 @@
-import React, { FormEventHandler, useState } from "react";
+import React, { useState } from "react";
 import {
-  useForm,
   Controller,
   Control,
   UseFormHandleSubmit,
   UseFormWatch,
 } from "react-hook-form";
-import {
-  Grid,
-  InputAdornment,
-  OutlinedInput as Input,
-  OutlinedInput,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { SimpleSelection } from "../../components/SimpleSelection";
+import { Grid, InputAdornment, OutlinedInput } from "@mui/material";
 import { SimpleButton } from "../../components/SimpleButton";
 import { AssetSelection } from "./AssetSelection";
-import { IMaskInput } from "react-imask";
-
-interface CustomProps {
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-}
-
-const TextMaskCustom = React.forwardRef<HTMLElement, CustomProps>(
-  function TextMaskCustom(props, ref) {
-    const { onChange, ...other } = props;
-    return (
-      <IMaskInput
-        {...other}
-        mask={/^([1-9]\d?|100)$/}
-        inputRef={ref as any}
-        onAccept={(value: any) =>
-          onChange({ target: { name: props.name, value } })
-        }
-        overwrite
-      />
-    );
-  }
-);
+import { CreateButton } from "./CreateButton";
+import { TextMaskCustom } from "../../components/PercentageInput";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 
 export function AssetList({ handleSubmit, control, watch, onSubmit }: Props) {
   const [asset, setAssets] = useState<Array<[JSX.Element, JSX.Element]>>([]);
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={2} style={{ maxWidth: "75%" }}>
-        {asset.map((item) => {
+      <Grid
+        container
+        spacing={2}
+        key={asset.length}
+        style={{ maxWidth: "75%" }}
+      >
+        {asset.map((item, index) => {
           return (
             <React.Fragment>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 {item[0]}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 {item[1]}
+              </Grid>
+              <Grid item xs={2}>
+                <IconButton aria-label="Example">
+                  <DeleteIcon
+                    onClick={() => {
+                      const newAsset = [...asset];
+                      newAsset.splice(index, 1);
+                      console.log(newAsset);
+                      setAssets(newAsset);
+                    }}
+                  />
+                </IconButton>
               </Grid>
             </React.Fragment>
           );
@@ -65,7 +56,8 @@ export function AssetList({ handleSubmit, control, watch, onSubmit }: Props) {
                 ...asset,
                 [
                   <Controller
-                    name={`value${asset.length}`}
+                    key={asset.length}
+                    name={`piece.${asset.length}.value`}
                     control={control}
                     render={({ field }) => (
                       <OutlinedInput
@@ -78,11 +70,24 @@ export function AssetList({ handleSubmit, control, watch, onSubmit }: Props) {
                     )}
                   />,
                   <Controller
-                    name={`asset${asset.length}`}
+                    key={asset.length}
+                    name={`piece.${asset.length}.name`}
                     control={control}
                     render={({ field }) => {
-                      console.log(field);
-                      return <AssetSelection {...field} />;
+                      return (
+                        <AssetSelection
+                          key={selectedValues.length}
+                          nameSelected={selectedValues}
+                          {...field}
+                          onChange={(event) => {
+                            setSelectedValues([
+                              ...selectedValues,
+                              event.target.value,
+                            ]);
+                            field.onChange(event);
+                          }}
+                        />
+                      );
                     }}
                   />,
                 ],
@@ -98,45 +103,6 @@ export function AssetList({ handleSubmit, control, watch, onSubmit }: Props) {
         </Grid>
       </Grid>
     </form>
-  );
-}
-
-function CreateButton({ watch }: { watch: UseFormWatch<any> }): JSX.Element {
-  const [isValid, setValid] = useState(false);
-  const [balance, setBalance] = useState(0);
-  React.useEffect(() => {
-    const subscription = watch(
-      (_value: Record<string, string>, { name, value }) => {
-        if (_value) {
-          let number = 0;
-          [...Object.entries(_value)].map((_, index) => {
-            if (_value[`value${index}`]) {
-              number += parseInt(_value[`value${index}`] as any as string);
-            }
-          });
-          setValid(number === 100);
-          setBalance(number);
-        }
-      }
-    );
-    return () => subscription.unsubscribe();
-  }, [watch]);
-
-  return (
-    <React.Fragment>
-      <SimpleButton
-        disabled={!isValid}
-        color={"success"}
-        onClick={() => undefined}
-        type={"submit"}
-      >
-        Create
-      </SimpleButton>
-
-      <Typography>
-        Current {balance}% is divided, but we want to divide 100%{" "}
-      </Typography>
-    </React.Fragment>
   );
 }
 
