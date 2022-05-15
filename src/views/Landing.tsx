@@ -8,6 +8,7 @@ import { CreatePortfolioBUtton } from "./CreatePortfolioButton";
 import { PortfolioCard } from "../components/PortfolioCard";
 import { GetPortfolios } from "../communication/GetPortfolios";
 import { hasMetamask } from "../utils/hasMetamask";
+import { CallSmartContractButton } from "./CallSmartContractButton";
 
 export function Landing(): JSX.Element {
   const hasMetamaskInstalled = hasMetamask();
@@ -22,6 +23,10 @@ export function Landing(): JSX.Element {
     >
       <Grid item xs={12} style={{ maxWidth: 345, margin: "auto" }}>
         <CreatePortfolioBUtton />
+      </Grid>
+
+      <Grid item xs={12} style={{ maxWidth: 345, margin: "auto" }}>
+        <CallSmartContractButton />
       </Grid>
 
       {hasMetamaskInstalled ? (
