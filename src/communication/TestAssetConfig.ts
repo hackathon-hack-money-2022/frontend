@@ -11,3 +11,5 @@ export const TEST_TOKENS: Array<{
     color: "Blue",
   },
 ];
+
+export const TEST_TOKEN_LENGTH = TEST_TOKENS.length;

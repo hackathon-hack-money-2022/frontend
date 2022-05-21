@@ -5,8 +5,10 @@ import { AssetList } from "./asset-list/AssetList";
 import { AssetPie } from "./asset-list/AssetPie";
 
 export function Constructions(): JSX.Element {
-  const { control, handleSubmit, watch } = useForm({});
-  const onSubmit = (data: unknown) => console.log(data);
+  const { control, handleSubmit, watch, reset } = useForm({});
+  const onSubmit = (data: unknown) => {
+    reset();
+  };
 
   return (
     <React.Fragment>

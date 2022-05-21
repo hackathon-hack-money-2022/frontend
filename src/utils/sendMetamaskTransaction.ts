@@ -1,9 +1,7 @@
-import { AbiStruct } from "tinyeth";
-
-export async function sendMetamaskTransaction(options:{
-    data: string;
-    value: string;
-}) {
+export async function sendMetamaskTransaction(options: {
+  data: string;
+  value: string;
+}): Promise<string> {
   const ethereum = (window as any).ethereum;
 
   const transactionParameters = {
@@ -22,12 +20,3 @@ export async function sendMetamaskTransaction(options:{
 
   return txHash;
 }
-
-
-/*
-
-new Abi().simpleFunctionEncoding({
-      functionName: "deposit",
-      arguments: new AbiStruct([new Uint8(50), new Uint8(50)]),
-    })
-*/

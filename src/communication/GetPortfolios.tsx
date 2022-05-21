@@ -4,7 +4,7 @@ const tokens: Array<{
   name: string;
 }> = [
   {
-    name: "Blue",
+    name: "Basic portfolio",
   },
 ];
 

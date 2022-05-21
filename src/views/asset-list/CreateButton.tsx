@@ -6,16 +6,24 @@ import { SimpleButton } from "../../components/SimpleButton";
 export function CreateButton({
   watch,
   onCreate,
+  show,
 }: {
   watch: UseFormWatch<any>;
-  onCreate: (values: Record<string, string>) => void;
-}): JSX.Element {
+  onCreate: (values: Record<string, string>, wei: string) => void;
+  show: boolean;
+}): JSX.Element | null {
   const [isValid, setValid] = useState(false);
   const [balance, setBalance] = useState(0);
   const [values, setValues] = useState<Record<string, string>>({});
+
+  const [wei, setWei] = useState("");
+
   React.useEffect(() => {
     const subscription = watch(
-      (_value: { piece: Array<{ name?: string; value?: string }> }) => {
+      (_value: {
+        piece: Array<{ name?: string; value?: string }>;
+        wei: string;
+      }) => {
         if (_value) {
           const values: Record<string, string> = {};
           let number = _value.piece
@@ -27,21 +35,26 @@ export function CreateButton({
             })
             .reduce((a, b) => a + b, 0);
 
-          setValid(number === 100);
           setBalance(number);
           setValues(values);
+          setWei(_value.wei);
+          setValid(number === 100 && !!_value.wei);
         }
       }
     );
     return () => subscription.unsubscribe();
   }, [watch]);
 
+  if (!show) {
+    return null;
+  }
+
   return (
     <React.Fragment>
       <SimpleButton
         disabled={!isValid}
         color={"success"}
-        onClick={() => onCreate(values)}
+        onClick={() => onCreate(values, wei)}
         type={"submit"}
       >
         Create

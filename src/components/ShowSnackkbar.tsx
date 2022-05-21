@@ -11,14 +11,21 @@ export function ShowSnackbar(props: Props) {
         horizontal: "center",
       }}
     >
-      <Alert severity="success" sx={{ width: "100%" }}>
-        This is a success message!
+      <Alert
+        onClick={props.handleClick}
+        severity={props.type}
+        sx={{ width: "100%" }}
+      >
+        {props.message}
       </Alert>
     </Snackbar>
   );
 }
 
 interface Props {
+  message: string;
   isOpen: boolean;
+  type: "success" | "error";
   handleClose: () => void;
+  handleClick: () => void;
 }

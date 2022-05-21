@@ -7,12 +7,7 @@ export function AssetPie(props: Props) {
   const watch = props.watch;
   React.useEffect(() => {
     const subscription = watch(
-      (
-        _value: {
-          piece: Array<{ name: string; value: string }>;
-        },
-        { name, value }
-      ) => {
+      (_value: { piece: Array<{ name: string; value: string }> }) => {
         if (_value.piece.length) {
           const newPieState: Record<string, string> = {};
           _value.piece.forEach((item) => {
@@ -34,7 +29,7 @@ export function AssetPie(props: Props) {
     Object.entries(pieState).length === 0
       ? [
           {
-            title: "Unalloacted",
+            title: "Unallocated",
             value: 50,
             color: "red",
           },
@@ -42,7 +37,7 @@ export function AssetPie(props: Props) {
       : Object.entries(pieState).map((item) => ({
           title: item[0],
           value: Number(item[1]),
-          color: stringToColour(item[0]),
+          color: stringToColor(item[0]),
         }));
 
   return <Pie key={pieState.length} pieces={pieces} />;
@@ -53,15 +48,15 @@ interface Props {
 }
 
 // MVP https://stackoverflow.com/a/16348977
-var stringToColour = function (str: string) {
-  var hash = 0;
-  for (var i = 0; i < str.length; i++) {
+const stringToColor = function (str: string) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
   }
-  var colour = "#";
-  for (var i = 0; i < 3; i++) {
-    var value = (hash >> (i * 8)) & 0xff;
-    colour += ("00" + value.toString(16)).substr(-2);
+  let color = "#";
+  for (let i = 0; i < 3; i++) {
+    let value = (hash >> (i * 8)) & 0xff;
+    color += ("00" + value.toString(16)).substr(-2);
   }
-  return colour;
+  return color;
 };

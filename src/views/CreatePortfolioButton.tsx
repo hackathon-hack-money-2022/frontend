@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import { AuthenticateWithMetamaskButton } from "../components/AuthenticateWithMetamaskButton";
 import { SimpleButton } from "../components/SimpleButton";
 
-export function CreatePortfolioBUtton() {
+export function CreatePortfolioButton() {
   const router = useHistory();
 
   return (
