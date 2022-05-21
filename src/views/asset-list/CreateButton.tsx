@@ -1,42 +1,35 @@
-import React, { FormEventHandler, useState } from "react";
-import {
-  useForm,
-  Controller,
-  Control,
-  UseFormHandleSubmit,
-  UseFormWatch,
-  useFieldArray,
-} from "react-hook-form";
-import {
-  Grid,
-  InputAdornment,
-  OutlinedInput as Input,
-  OutlinedInput,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { SimpleSelection } from "../../components/SimpleSelection";
+import React, { useState } from "react";
+import { UseFormWatch } from "react-hook-form";
+import { Typography } from "@mui/material";
 import { SimpleButton } from "../../components/SimpleButton";
-import { AssetSelection } from "./AssetSelection";
-import { IMaskInput } from "react-imask";
 
 export function CreateButton({
   watch,
+  onCreate,
 }: {
   watch: UseFormWatch<any>;
+  onCreate: (values: Record<string, string>) => void;
 }): JSX.Element {
   const [isValid, setValid] = useState(false);
   const [balance, setBalance] = useState(0);
+  const [values, setValues] = useState<Record<string, string>>({});
   React.useEffect(() => {
     const subscription = watch(
       (_value: { piece: Array<{ name?: string; value?: string }> }) => {
         if (_value) {
+          const values: Record<string, string> = {};
           let number = _value.piece
-            .map(({ value }) => (value ? Number(value) : 0))
+            .map(({ name, value }) => {
+              if (name && value) {
+                values[name] = value;
+              }
+              return value ? Number(value) : 0;
+            })
             .reduce((a, b) => a + b, 0);
 
           setValid(number === 100);
           setBalance(number);
+          setValues(values);
         }
       }
     );
@@ -48,15 +41,17 @@ export function CreateButton({
       <SimpleButton
         disabled={!isValid}
         color={"success"}
-        onClick={() => undefined}
+        onClick={() => onCreate(values)}
         type={"submit"}
       >
         Create
       </SimpleButton>
 
-      <Typography>
-        Current {balance}% is divided, but we want to divide 100%{" "}
-      </Typography>
+      {isValid ? null : (
+        <Typography>
+          Current {balance}% is divided, but we want to divide 100%{" "}
+        </Typography>
+      )}
     </React.Fragment>
   );
 }

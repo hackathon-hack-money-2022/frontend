@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { Link } from "react-router-dom";
 //import AdbIcon from "@mui/icons-material/Adb";
 
 export function OwnAppBar() {
@@ -12,21 +13,22 @@ export function OwnAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
-            variant="h5"
+            variant="h6"
             noWrap
             component="a"
             href=""
             sx={{
               mr: 2,
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            Home
+            <Link
+              style={{ color: "inherit", textDecoration: "none" }}
+              to={"/"}
+            >
+              Home
+            </Link>
           </Typography>
         </Toolbar>
       </Container>

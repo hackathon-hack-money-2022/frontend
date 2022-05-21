@@ -1,8 +1,6 @@
 import { Grid } from "@mui/material";
 import React from "react";
-import { useForm, useFormContext, useWatch } from "react-hook-form";
-import { GetAsset } from "../communication/GetAssets";
-import { Pie } from "../components/Pie";
+import { useForm } from "react-hook-form";
 import { AssetList } from "./asset-list/AssetList";
 import { AssetPie } from "./asset-list/AssetPie";
 

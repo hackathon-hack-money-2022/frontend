@@ -1,28 +1,8 @@
 import React from "react";
+import { TEST_TOKENS } from "./TestAssetConfig";
 
 export function GetAsset(props: Props): JSX.Element {
-  const tokens: Array<{
-    symbol: string;
-    color: string;
-  }> = [
-    {
-      symbol: "BTC",
-      color: "orange",
-    },
-    {
-      symbol: "ETH",
-      color: "Blue",
-    },
-    {
-      symbol: "LTC",
-      color: "Blue",
-    },
-    {
-      symbol: "DAI",
-      color: "Blue",
-    },
-  ];
-  return <React.Fragment>{props.children(tokens)}</React.Fragment>;
+  return <React.Fragment>{props.children(TEST_TOKENS)}</React.Fragment>;
 }
 
 interface Props {

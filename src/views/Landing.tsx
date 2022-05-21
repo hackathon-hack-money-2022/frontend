@@ -25,9 +25,15 @@ export function Landing(): JSX.Element {
         <CreatePortfolioBUtton />
       </Grid>
 
-      <Grid item xs={12} style={{ maxWidth: 345, margin: "auto" }}>
+      {
+        /**
+         * 
+               <Grid item xs={12} style={{ maxWidth: 345, margin: "auto" }}>
         <CallSmartContractButton />
       </Grid>
+
+         */
+      }
 
       {hasMetamaskInstalled ? (
         <GetPortfolios>

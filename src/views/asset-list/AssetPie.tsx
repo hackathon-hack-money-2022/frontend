@@ -7,14 +7,17 @@ export function AssetPie(props: Props) {
   const watch = props.watch;
   React.useEffect(() => {
     const subscription = watch(
-      (_value: Record<string, string>, { name, value }) => {
-        if (_value) {
-          const newPieState = pieState;
-          [...Object.entries(_value)].map((_, index) => {
-            if (_value[`asset${index}`]) {
-              newPieState[_value[`asset${index}`]] = _value[
-                `value${index}`
-              ] as any as string;
+      (
+        _value: {
+          piece: Array<{ name: string; value: string }>;
+        },
+        { name, value }
+      ) => {
+        if (_value.piece.length) {
+          const newPieState: Record<string, string> = {};
+          _value.piece.forEach((item) => {
+            if (item && item.value) {
+              newPieState[item.name] = item.value;
             }
           });
 

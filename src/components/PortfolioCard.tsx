@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions, Grid } from "@mui/material";
 import { PieChart } from "react-minimal-pie-chart";
 import { Pie } from "./Pie";
+import { TEST_TOKENS } from "../communication/TestAssetConfig";
 
 export function PortfolioCard(props: Props) {
   return (
@@ -17,24 +18,23 @@ export function PortfolioCard(props: Props) {
           </Typography>
           <Typography variant="body2" color="text.secondary">
             <Pie
-              pieces={[
-                {
-                  title: "BTC",
-                  value: 50,
-                  color: "orange",
-                },
-                {
-                  title: "ETH",
-                  value: 25,
-                  color: "ReD",
-                },
-              ]}
+              pieces={TEST_TOKENS.map((item, index) => {
+                return {
+                  ...item,
+                  title: item.symbol,
+                  value: index === 1 ? 70 : 30,
+                };
+              })}
             />
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small">Withdraw</Button>
-        </CardActions>
+        {
+          /*
+            <CardActions>
+              <Button size="small">Withdraw</Button>
+            </CardActions>          
+          */
+        }
       </CardActionArea>
     </Card>
   );

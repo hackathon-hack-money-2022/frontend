@@ -1,16 +1,15 @@
 import { Typography } from "@mui/material";
-import { setUncaughtExceptionCaptureCallback } from "process";
 import React, { useState } from "react";
 import { getMetamaskAccounts } from "../utils/getMetamaskAccounts";
 import { hasMetamask } from "../utils/hasMetamask";
 import { SimpleButton } from "./SimpleButton";
 
 export function AuthenticateWithMetamaskButton(props: Props) {
-  const [isAuthetnicaed, setAuth] = useState(false);
+  const [isAuthenticated, setAuth] = useState(false);
   const hasMetamaskInstalled = hasMetamask();
   return (
     <React.Fragment>
-      {isAuthetnicaed ? (
+      {isAuthenticated ? (
         <React.Fragment>{props.children}</React.Fragment>
       ) : (
         <React.Fragment>

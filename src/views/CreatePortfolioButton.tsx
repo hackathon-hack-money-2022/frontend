@@ -7,14 +7,16 @@ export function CreatePortfolioBUtton() {
   const router = useHistory();
 
   return (
-    <AuthenticateWithMetamaskButton>
-      <SimpleButton
-        onClick={() => {
-          router.push("/construction");
-        }}
-      >
-        Create an new portfolio
-      </SimpleButton>
-    </AuthenticateWithMetamaskButton>
+    <React.Fragment>
+      <AuthenticateWithMetamaskButton>
+        <SimpleButton
+          onClick={() => {
+            router.push("/construction");
+          }}
+        >
+          Create an new portfolio
+        </SimpleButton>
+      </AuthenticateWithMetamaskButton>
+    </React.Fragment>
   );
 }

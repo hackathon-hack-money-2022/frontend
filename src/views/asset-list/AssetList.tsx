@@ -4,18 +4,29 @@ import {
   Control,
   UseFormHandleSubmit,
   UseFormWatch,
+  useFormState,
 } from "react-hook-form";
-import { Grid, InputAdornment, OutlinedInput } from "@mui/material";
+import {
+  CircularProgress,
+  Grid,
+  InputAdornment,
+  OutlinedInput,
+} from "@mui/material";
 import { SimpleButton } from "../../components/SimpleButton";
 import { AssetSelection } from "./AssetSelection";
 import { CreateButton } from "./CreateButton";
 import { TextMaskCustom } from "../../components/PercentageInput";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
+import { ShowSnackbar } from "../../components/ShowSnackkbar";
+import { sendMetamaskTransaction } from "../../utils/sendMetamaskTransaction";
+import { Abi, AbiStruct, Uint8 } from "tinyeth";
 
 export function AssetList({ handleSubmit, control, watch, onSubmit }: Props) {
   const [asset, setAssets] = useState<Array<[JSX.Element, JSX.Element]>>([]);
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -40,7 +51,6 @@ export function AssetList({ handleSubmit, control, watch, onSubmit }: Props) {
                     onClick={() => {
                       const newAsset = [...asset];
                       newAsset.splice(index, 1);
-                      console.log(newAsset);
                       setAssets(newAsset);
                     }}
                   />
@@ -99,8 +109,41 @@ export function AssetList({ handleSubmit, control, watch, onSubmit }: Props) {
         </Grid>
 
         <Grid item xs={12}>
-          <CreateButton watch={watch} />
+          {showLoading ? (
+            <CircularProgress />
+          ) : (
+            <CreateButton
+              watch={watch}
+              onCreate={async (values) => {
+                setShowLoading(true);
+
+                const getPercentageNumber = (token: string) => {
+                  const value = Number(values[token]);
+                  return value ? value : 0;
+                }
+
+                sendMetamaskTransaction({
+                  data: new Abi().simpleFunctionEncoding({
+                    functionName: "deposit",
+                    arguments: new AbiStruct([
+                      new Uint8(getPercentageNumber("SNX")),
+                      new Uint8(getPercentageNumber("DAI")),
+                    ]),
+                  }),
+                  value: "2000000",
+                }).then(() => {
+                  setShowLoading(false);
+                  setShowSuccess(true);
+                });
+              }}
+            />
+          )}
         </Grid>
+
+        <ShowSnackbar
+          isOpen={showSuccess}
+          handleClose={() => setShowSuccess(false)}
+        />
       </Grid>
     </form>
   );
